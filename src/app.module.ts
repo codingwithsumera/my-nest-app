@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
@@ -9,7 +10,15 @@ import { EmployeeModule } from './employee/employee.module.js';
 import { CategoryModule } from './category/category.module.js';
 import { StudentModule } from './student/student.module.js';
 import { CustomerModule } from './customer/customer.module.js';
-
+import { MynameController } from './myname/myname.controller.js';
+import { UserRolesController } from './user-roles/user-roles.controller.js';
+import { ExceptionController } from './exception/exception.controller.js';
+import { LoggerMiddleware } from './middleware/logger/logger.middleware.js';
+import { DatabaseService } from './database/database.service.js';
+import { DatabaseController } from './database/database.controller.js';
+import { EnvService } from './env/env.service.js';
+import { EnvController } from './env/env.controller.js';
+import { MongooseModule } from '@nestjs/mongoose';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -25,8 +34,27 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     CategoryModule,
     StudentModule,
     CustomerModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    MongooseModule.forRoot(process.env.MONGO_URI!),
   ],
-  controllers: [AppController, UserController, ProductController],
-  providers: [AppService, ProductService],
+  controllers: [
+    AppController,
+    UserRolesController,
+    UserController,
+    ProductController,
+    MynameController,
+    UserRolesController,
+    ExceptionController,
+    DatabaseController,
+    EnvController,
+  ],
+  providers: [AppService, ProductService, DatabaseService, EnvService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
