@@ -1,9 +1,8 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { UserController } from './user/user.controller.js';
 import { ProductService } from './product/product.service.js';
 import { ProductController } from './product/product.controller.js';
 import { EmployeeModule } from './employee/employee.module.js';
@@ -19,6 +18,7 @@ import { DatabaseController } from './database/database.controller.js';
 import { EnvService } from './env/env.service.js';
 import { EnvController } from './env/env.controller.js';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module.js';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -34,6 +34,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     CategoryModule,
     StudentModule,
     CustomerModule,
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -43,7 +44,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
   controllers: [
     AppController,
     UserRolesController,
-    UserController,
     ProductController,
     MynameController,
     UserRolesController,

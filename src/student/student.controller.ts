@@ -9,38 +9,39 @@ import {
   Delete,
 } from '@nestjs/common';
 import { StudentService } from './student.service.js';
+import { Student } from './student.schema.js';
 
 @Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
+
+  @Post()
+  async addStudent(@Body() data: Partial<Student>) {
+    return this.studentService.createStudent(data);
+  }
+
   @Get()
-  getAll() {
+  async getAllStudents() {
     return this.studentService.getAllStudents();
   }
+
   @Get(':id')
-  getOne(@Param('id') id: string) {
-    return this.studentService.getStudentById(Number(id));
+  async getStudentById(@Param('id') id: string) {
+    return this.studentService.getStudentById(id);
   }
-  @Post()
-  create(@Body() student: { name: string; age: number }) {
-    return this.studentService.createStudent(student);
-  }
+
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updatedStudent: { name?: string; age?: number },
-  ) {
-    return this.studentService.updateStudent(Number(id), updatedStudent);
+  async updateStudent(@Param('id') id: string, @Body() data: Partial<Student>) {
+    return this.studentService.updateStudent(id, data);
   }
+
   @Patch(':id')
-  patch(
-    @Param('id') id: string,
-    @Body() updatedStudent: Partial<{ name: string; age: number }>,
-  ) {
-    return this.studentService.patchStudent(Number(id), updatedStudent);
+  async patchStudent(@Param('id') id: string, @Body() data: Partial<Student>) {
+    return this.studentService.patchStudent(id, data);
   }
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentService.deleteStudent(Number(id));
+  async deleteStudent(@Param('id') id: string) {
+    return this.studentService.deleteStudent(id);
   }
 }
