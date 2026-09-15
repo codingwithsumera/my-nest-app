@@ -22,6 +22,9 @@ import { UserModule } from './user/user.module.js';
 import { ProductModule } from './product/product.module.js';
 import { Product, ProductSchema } from './product/schemas/product.schema.js';
 import { LibraryModule } from './library/library.module.js';
+import { ProjectService } from './project/project.service.js';
+import { ProjectController } from './project/project.controller.js';
+import { ProjectModule } from './project/project.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -47,6 +50,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     }),
     MongooseModule.forRoot(process.env.MONGO_URI!),
     LibraryModule,
+    ProjectModule,
   ],
   controllers: [
     ProductController,
@@ -58,8 +62,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     ExceptionController,
     DatabaseController,
     EnvController,
+    ProjectController,
   ],
-  providers: [ProductService, AppService, DatabaseService, EnvService],
+  providers: [ProductService, AppService, DatabaseService, EnvService, ProjectService],
   exports: [ProductService],
 })
 export class AppModule implements NestModule {
