@@ -19,10 +19,14 @@ import { EnvService } from './env/env.service.js';
 import { EnvController } from './env/env.controller.js';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module.js';
+import { ProductModule } from './product/product.module.js';
+import { Product, ProductSchema } from './product/schemas/product.schema.js';
+
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
+    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
     // Distributed tracing, auto-correlated logs, request/job metrics, error
     // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
     ObserveModule.forRoot({
@@ -30,6 +34,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: 'YOUR_APP_SECRET',
       serviceId: 'my-nest-app',
     }),
+    ProductModule,
     EmployeeModule,
     CategoryModule,
     StudentModule,
@@ -42,16 +47,18 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     MongooseModule.forRoot(process.env.MONGO_URI!),
   ],
   controllers: [
+    ProductController,
     AppController,
     UserRolesController,
-    ProductController,
+
     MynameController,
     UserRolesController,
     ExceptionController,
     DatabaseController,
     EnvController,
   ],
-  providers: [AppService, ProductService, DatabaseService, EnvService],
+  providers: [ProductService, AppService, DatabaseService, EnvService],
+  exports: [ProductService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
