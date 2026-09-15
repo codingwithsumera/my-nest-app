@@ -21,6 +21,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module.js';
 import { ProductModule } from './product/product.module.js';
 import { Product, ProductSchema } from './product/schemas/product.schema.js';
+import { LibraryModule } from './library/library.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -45,6 +46,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       envFilePath: '.env',
     }),
     MongooseModule.forRoot(process.env.MONGO_URI!),
+    LibraryModule,
   ],
   controllers: [
     ProductController,
