@@ -25,11 +25,26 @@ import { LibraryModule } from './library/library.module.js';
 import { ProjectService } from './project/project.service.js';
 import { ProjectController } from './project/project.controller.js';
 import { ProjectModule } from './project/project.module.js';
+import { Project, ProjectSchema } from './project/schemas/project.schemas.js';
+import {
+  Developer,
+  DeveloperSchema,
+} from './project/schemas/developer.schema.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
+    MongooseModule.forFeature([
+      {
+        name: Developer.name,
+        schema: DeveloperSchema,
+      },
+      {
+        name: Project.name,
+        schema: ProjectSchema,
+      },
+    ]),
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
     // Distributed tracing, auto-correlated logs, request/job metrics, error
     // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
@@ -56,7 +71,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     ProductController,
     AppController,
     UserRolesController,
-
     MynameController,
     UserRolesController,
     ExceptionController,
@@ -64,7 +78,13 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     EnvController,
     ProjectController,
   ],
-  providers: [ProductService, AppService, DatabaseService, EnvService, ProjectService],
+  providers: [
+    ProductService,
+    AppService,
+    DatabaseService,
+    EnvService,
+    ProjectService,
+  ],
   exports: [ProductService],
 })
 export class AppModule implements NestModule {

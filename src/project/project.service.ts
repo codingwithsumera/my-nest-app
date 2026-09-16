@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Developer } from './schemas/developer.schema.js';
 import { Project } from './schemas/project.schemas.js';
 import { Model } from 'mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Injectable()
 export class ProjectService {
@@ -27,7 +27,7 @@ export class ProjectService {
 
       this.developerModel.create({
         name: 'Ahmad',
-        projects: [project2._id],
+        //projects: [project2._id],
       }),
     ]);
     await Promise.all([

@@ -7,6 +7,6 @@ export class Project extends Document {
   title: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Developer' }] })
-  projects: Types.ObjectId;
+  developers: Types.ObjectId;
 }
 export const ProjectSchema = SchemaFactory.createForClass(Project);

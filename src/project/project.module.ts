@@ -18,6 +18,7 @@ import { Project, ProjectSchema } from './schemas/project.schemas.js';
         schema: ProjectSchema,
       },
     ]),
+    ProjectModule,
   ],
   controllers: [ProjectController],
   providers: [ProjectService],
